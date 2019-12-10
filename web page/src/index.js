@@ -20,14 +20,15 @@ class Profile extends React.Component {
   async startExperiment() {
     this.props.history.listen(jsPsych.endExperiment);
 
+    jsPsych.data.addProperties({user_id: this.props.userID}); //See https://www.jspsych.org/core_library/jspsych-data/#jspsychdataaddproperties
     await pushkin.connect('/api/newexp');
-    await pushkin.prepExperimentRun();
+    await pushkin.prepExperimentRun(this.props.userID);
     await pushkin.loadScripts([
       'https://cdn.jsdelivr.net/gh/jspsych/jsPsych@6.0.4/plugins/jspsych-html-button-response.js',
       'https://cdn.jsdelivr.net/gh/jspsych/jsPsych@6.0.4/plugins/jspsych-instructions.js',
       'https://cdn.jsdelivr.net/gh/jspsych/jsPsych@6.0.4/plugins/jspsych-survey-text.js'
     ]);
-    const stimuli = await pushkin.getAllStimuli();
+    const stimuli = await pushkin.getAllStimuli(this.props.userID);
     const timeline = pushkin.setSaveAfterEachStimulus(stimuli);
     await jsPsych.init({
       display_element: document.getElementById('jsPsychTarget'),
@@ -40,7 +41,7 @@ class Profile extends React.Component {
 
   endExperiment() {
     this.setState({ experimentComplete: true });
-    pushkin.endExperiment();
+    pushkin.endExperiment(this.props.userID);
   }
 
   render() {

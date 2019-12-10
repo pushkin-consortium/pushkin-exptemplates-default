@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pushkin-worker": "^1.0.2"
+    "knex": "^0.20.3",
+    "pushkin-worker": "^1.0.4"
   }
 }
