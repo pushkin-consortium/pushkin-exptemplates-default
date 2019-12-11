@@ -1,10 +1,10 @@
 const pWorker = require('pushkin-worker').default;
 
 const options = {
+	amqpAddress: process.env.AMQP_ADDRESS || 'amqp://localhost',
 	readQueue: 'newexp_quiz_dbread',
 	writeQueue: 'newexp_quiz_dbwrite',
 	taskQueue: 'newexp_quiz_taskworker',
-	amqpAddress: process.env.AMQP_ADDRESS || 'amqp://localhost'
 };
 
 const db_user = process.env.DB_USER;

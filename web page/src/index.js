@@ -2,23 +2,38 @@ import React from 'react';
 import pushkinClient from 'pushkin-client';
 import jsPsych from 'pushkin-jspsych';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const pushkin = new pushkinClient();
 window.jsPsych = jsPsych;
 
-class Profile extends React.Component {
+
+const mapStateToProps = state => {
+  return {
+    userID: state.userInfo.userID
+  };
+}
+
+class quizComponent extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { loading: true, experimentComplete: false };
+    this.state = { loading: true };
   }
 
   componentDidMount() {
     this.startExperiment();
+    window.addEventListener('beforeunload', this.beforeunload.bind(this));
   }
 
+  async beforeunload(e) {
+    await this.endExperiment();
+    delete e['returnValue']
+    }
+
   async startExperiment() {
-    this.props.history.listen(jsPsych.endExperiment);
+    this.setState({ experimentStarted: true });
+    this.props.history.listen(this.endEarly);
 
     jsPsych.data.addProperties({user_id: this.props.userID}); //See https://www.jspsych.org/core_library/jspsych-data/#jspsychdataaddproperties
     await pushkin.connect('/api/newexp');
@@ -33,15 +48,22 @@ class Profile extends React.Component {
     await jsPsych.init({
       display_element: document.getElementById('jsPsychTarget'),
       timeline: timeline,
-      on_finish: this.endExperiment.bind(this)
+      on_finish: this.endExperiment.bind(this),
+      on_close: this.endExperiment.bind(this)
     });
 
     this.setState({ loading: false });
   }
 
+  finishExperiment() {
+    //Basically just a wrapper
+    document.getElementById("jsPsychTarget").innerHTML = "Thank you for participating!";
+    this.endExperiment();
+  }
+
   endExperiment() {
-    this.setState({ experimentComplete: true });
     pushkin.endExperiment(this.props.userID);
+    window.removeEventListener('beforeunload', this.beforeunload.bind(this));
   }
 
   render() {
@@ -56,4 +78,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default withRouter(connect(mapStateToProps)(quizComponent));
