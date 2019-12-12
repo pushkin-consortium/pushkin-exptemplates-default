@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('newexp_stimuli', table => {
+  return knex.schema.createTable('pushkintemplate_stimuli', table => {
     table.increments('id').primary();
 		table.string('stimulus').unique().notNullable();
 		table.string('correct');
@@ -7,5 +7,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('newexp_stimuli');
+  return knex.schema.dropTable('pushkintemplate_stimuli');
 };

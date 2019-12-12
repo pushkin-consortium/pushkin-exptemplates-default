@@ -36,7 +36,7 @@ class quizComponent extends React.Component {
     this.props.history.listen(this.endEarly);
 
     jsPsych.data.addProperties({user_id: this.props.userID}); //See https://www.jspsych.org/core_library/jspsych-data/#jspsychdataaddproperties
-    await pushkin.connect('/api/newexp');
+    await pushkin.connect('/api/pushkintemplate');
     await pushkin.prepExperimentRun(this.props.userID);
     await pushkin.loadScripts([
       'https://cdn.jsdelivr.net/gh/jspsych/jsPsych@6.0.4/plugins/jspsych-html-button-response.js',

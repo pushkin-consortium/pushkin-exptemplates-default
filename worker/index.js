@@ -2,9 +2,9 @@ const pWorker = require('pushkin-worker').default;
 
 const options = {
 	amqpAddress: process.env.AMQP_ADDRESS || 'amqp://localhost',
-	readQueue: 'newexp_quiz_dbread',
-	writeQueue: 'newexp_quiz_dbwrite',
-	taskQueue: 'newexp_quiz_taskworker',
+	readQueue: 'pushkintemplate_quiz_dbread',
+	writeQueue: 'pushkintemplate_quiz_dbwrite',
+	taskQueue: 'pushkintemplate_quiz_taskworker',
 };
 
 const db_user = process.env.DB_USER;
@@ -21,7 +21,7 @@ worker.init()
 			console.log(`handling test method got data: ${data}`);
 			return `successfully got ${data}`;
 		});
-		worker.useDefaultHandles(db_conn_address, 'newexp');
+		worker.useDefaultHandles(db_conn_address, 'pushkintemplate');
 		worker.start();
 	})
 	.catch(err => {

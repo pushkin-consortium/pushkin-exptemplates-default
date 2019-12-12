@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('newexp_users', table => {
+  return knex.schema.createTable('pushkintemplate_users', table => {
     table.increments('id').primary();
     table.string('auth0_id');
 		table.string('session_id').unique();
@@ -11,5 +11,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('newexp_users');
+  return knex.schema.dropTable('pushkintemplate_users');
 };

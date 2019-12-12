@@ -1,7 +1,7 @@
 
 exports.seed = function(knex, Promise) {
 	// Deletes ALL existing entries
-	return knex('newexp_stimuli').del()
+	return knex('pushkintemplate_stimuli').del()
 		.then(function () {
 			// Inserts seed entries
 
@@ -32,6 +32,6 @@ exports.seed = function(knex, Promise) {
 				correct: q.a
 			}));
 
-			return knex('newexp_stimuli').insert(insertData);
+			return knex('pushkintemplate_stimuli').insert(insertData);
 		});
 };
